@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleStructuredLoggingLibrary", "SimpleStructuredLoggingLibrary\SimpleStructuredLoggingLibrary.csproj", "{3F7ABCCC-BFD1-4CB6-B363-EC28EA33B769}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleStructuredLoggingLibrary", "src\SimpleStructuredLoggingLibrary\SimpleStructuredLoggingLibrary.csproj", "{3F7ABCCC-BFD1-4CB6-B363-EC28EA33B769}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleStructuredLoggingLibrary.Test", "SimpleStructuredLoggingLibrary.Test\SimpleStructuredLoggingLibrary.Test.csproj", "{B624E3B4-C5AA-41AD-80A2-C486BE6F5E66}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleStructuredLoggingLibrary.Test", "tests\SimpleStructuredLoggingLibrary.Test\SimpleStructuredLoggingLibrary.Test.csproj", "{B624E3B4-C5AA-41AD-80A2-C486BE6F5E66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleStructuredLoggingLibrary.Formatting.Logstash", "SimpleStructuredLoggingLibrary.Formatting.Logstash\SimpleStructuredLoggingLibrary.Formatting.Logstash.csproj", "{970EA7F9-D1AE-4641-81C9-58679CE52F7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleStructuredLoggingLibrary.Formatting.Logstash", "src\SimpleStructuredLoggingLibrary.Formatting.Logstash\SimpleStructuredLoggingLibrary.Formatting.Logstash.csproj", "{970EA7F9-D1AE-4641-81C9-58679CE52F7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleStructuredLoggingLibrary.Formatting.Logstash.Test", "SimpleStructuredLoggingLibrary.Formatting.Logstash.Test\SimpleStructuredLoggingLibrary.Formatting.Logstash.Test.csproj", "{AB8C0B65-ADB2-4F0A-9296-4F19CB73A7DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleStructuredLoggingLibrary.Formatting.Logstash.Test", "tests\SimpleStructuredLoggingLibrary.Formatting.Logstash.Test\SimpleStructuredLoggingLibrary.Formatting.Logstash.Test.csproj", "{AB8C0B65-ADB2-4F0A-9296-4F19CB73A7DD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{905B33F6-43B4-4438-A03F-C6B77DB236BD}"
 EndProject
