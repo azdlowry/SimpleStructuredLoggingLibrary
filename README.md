@@ -1,0 +1,2 @@
+# SimpleStructuredLoggingLibrary
+A SimpleStructuredLoggingLibrary
