@@ -6,5 +6,6 @@ mkdir content\controllers
 
 copy ..\src\SimpleStructuredLoggingLibrary\bin\Debug\SimpleStructuredLoggingLibrary.dll lib\net46
 copy ..\src\SimpleStructuredLoggingLibrary.Formatting.Logstash\bin\Debug\SimpleStructuredLoggingLibrary.Formatting.Logstash.dll lib\net46
+copy ..\src\SimpleStructuredLoggingLibrary.Transport.UDP\bin\Debug\SimpleStructuredLoggingLibrary.Transport.UDP.dll lib\net46
 
 nuget pack
