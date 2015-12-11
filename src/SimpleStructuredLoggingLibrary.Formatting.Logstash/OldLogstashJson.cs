@@ -7,20 +7,14 @@ using System.Globalization;
 
 namespace SimpleStructuredLoggingLibrary.Formatting.Logstash
 {
-    public static class LogstashJson
+    public static class OldLogstashJson
     {
         public static FormattedLogEvent Format(LogEvent logEvent)
         {
-            var requiredFields = new Dictionary<string, object>()
-            {
-                { "@version", 1 },
-                { "@timestamp", logEvent.Timestamp.ToString("yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture) }
-            };
-
             var jsonSerializer = new JsonSerializer() { };
             jsonSerializer.Converters.Add(new StringEnumConverter() { AllowIntegerValues = false });
 
-            var json = JObject.FromObject(requiredFields, jsonSerializer);
+            var json = new JObject();
             json.Merge(JObject.FromObject(logEvent.Content, jsonSerializer));
 
             foreach (var fields in logEvent.AdditionalFields)
@@ -28,7 +22,14 @@ namespace SimpleStructuredLoggingLibrary.Formatting.Logstash
                 json.Merge(JObject.FromObject(fields, jsonSerializer));
             }
 
-            return new FormattedLogEvent() { Content = JsonConvert.SerializeObject(json) };
+            var requiredFields = new Dictionary<string, object>()
+            {
+                { "@timestamp", logEvent.Timestamp.ToString("yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture) },
+                { "@tags", logEvent.Tags },
+                { "@fields", json }
+            };
+
+            return new FormattedLogEvent() { Content = JsonConvert.SerializeObject(requiredFields) };
         }
     }
 }
