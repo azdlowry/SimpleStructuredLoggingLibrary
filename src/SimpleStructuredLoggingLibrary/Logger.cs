@@ -19,6 +19,11 @@ namespace SimpleStructuredLoggingLibrary
             loggingPipelineFactory(_logEvents);
         }
 
+        public RequestLog StartRequestLog()
+        {
+            return new RequestLog(_logEvents);
+        }
+
         public void Info(object logDetail, [CallerFilePath] string callerFilePath = "", [CallerLineNumber]int callerLineNumber = 0)
         {
             var callerInfo = new CallerInfo() { FilePath = callerFilePath, LineNum = callerLineNumber };
