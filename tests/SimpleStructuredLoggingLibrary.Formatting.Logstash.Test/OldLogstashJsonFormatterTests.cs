@@ -183,6 +183,26 @@ namespace SimpleStructuredLoggingLibrary.Formatting.Logstash.Test
         }
 
         [Fact]
+        public void should_merge_dictionaries()
+        {
+            var output = new List<FormattedLogEvent>();
+
+            Logger logger = new Logger(logEvents => logEvents
+                .AddFields(new { Things = new Dictionary<string, int> { { "A", 1 }, { "B", 2 } } })
+                .AddFields(new { Things = new Dictionary<string, int> { { "C", 3 } } })
+                .Select(OldLogstashJson.Format)
+                .Subscribe(log => output.Add(log))
+                );
+            var callerFilePath = GetCallerFilePath();
+
+            logger.Info(new { Things = new Dictionary<string, int> { { "D", 4 } } });
+
+            JObject parsed = GetJObject(output);
+
+            Assert.Equal(new Dictionary<string, int> { { "A", 1 }, { "B", 2 }, { "C", 3 }, { "D", 4 } }, parsed.Value<JObject>("@fields").Value<JObject>("Things").ToObject<Dictionary<string, int>>());
+        }
+
+        [Fact]
         public void should_prefer_message_fields_over_additional_fields()
         {
             var output = new List<FormattedLogEvent>();
