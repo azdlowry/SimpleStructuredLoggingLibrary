@@ -15,7 +15,6 @@ namespace SimpleStructuredLoggingLibrary.Formatting.Logstash
             jsonSerializer.Converters.Add(new StringEnumConverter() { AllowIntegerValues = false });
 
             var json = new JObject();
-            json.Merge(JObject.FromObject(logEvent.Content, jsonSerializer));
 
             foreach (var fields in logEvent.AdditionalFields)
             {
@@ -28,6 +27,8 @@ namespace SimpleStructuredLoggingLibrary.Formatting.Logstash
                 { "@tags", logEvent.Tags },
                 { "@fields", json }
             };
+
+            json.Merge(JObject.FromObject(logEvent.Content, jsonSerializer));
 
             return new FormattedLogEvent() { Content = JsonConvert.SerializeObject(requiredFields) };
         }

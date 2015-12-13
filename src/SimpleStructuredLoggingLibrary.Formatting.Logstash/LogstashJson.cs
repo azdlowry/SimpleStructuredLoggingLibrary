@@ -21,12 +21,13 @@ namespace SimpleStructuredLoggingLibrary.Formatting.Logstash
             jsonSerializer.Converters.Add(new StringEnumConverter() { AllowIntegerValues = false });
 
             var json = JObject.FromObject(requiredFields, jsonSerializer);
-            json.Merge(JObject.FromObject(logEvent.Content, jsonSerializer));
 
             foreach (var fields in logEvent.AdditionalFields)
             {
                 json.Merge(JObject.FromObject(fields, jsonSerializer));
             }
+
+            json.Merge(JObject.FromObject(logEvent.Content, jsonSerializer));
 
             return new FormattedLogEvent() { Content = JsonConvert.SerializeObject(json) };
         }

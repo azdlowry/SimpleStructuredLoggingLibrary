@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="CallerInfo.cs" />
     <Compile Include="FormattedLogEvent.cs" />
+    <Compile Include="InvalidLogMessageTypeException.cs" />
     <Compile Include="LogEvent.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="LogObservableExtentions.cs" />

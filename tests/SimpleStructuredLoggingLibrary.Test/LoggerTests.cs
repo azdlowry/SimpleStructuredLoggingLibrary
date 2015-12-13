@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
@@ -91,6 +89,41 @@ namespace SimpleStructuredLoggingLibrary.Test
                 log => Assert.Equal(callerLineNumber + 3, log.CallerInfo.LineNum),
                 log => Assert.Equal(callerLineNumber + 4, log.CallerInfo.LineNum),
                 log => Assert.Equal(callerLineNumber + 5, log.CallerInfo.LineNum));
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData("string")]
+        [InlineData(1.45)]
+        [InlineData(1l)]
+        public void should_reject_message_that_are_not_objects(object invalidMessage)
+        {
+            var output = new List<LogEvent>();
+
+            Logger logger = new Logger(logEvents => logEvents
+                .Subscribe(log => output.Add(log))
+                );
+            var callerFilePath = GetCallerFilePath();
+
+            Assert.Throws<InvalidLogMessageTypeException>(() => logger.Info(invalidMessage));
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData("string")]
+        [InlineData(1.45)]
+        [InlineData(1l)]
+        public void should_reject_additionalfields_that_are_not_objects(object invalidMessage)
+        {
+            var output = new List<LogEvent>();
+
+            Logger logger = new Logger(logEvents => logEvents
+                .AddFields(invalidMessage)
+                .Subscribe(log => output.Add(log))
+                );
+            var callerFilePath = GetCallerFilePath();
+
+            Assert.Throws<InvalidLogMessageTypeException>(() => logger.Info(new { }));
         }
 
         private string GetCallerFilePath([CallerFilePath]string callerFilePath = "Shouldn't Get This")

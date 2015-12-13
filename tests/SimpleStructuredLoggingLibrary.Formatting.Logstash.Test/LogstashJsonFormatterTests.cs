@@ -180,6 +180,45 @@ namespace SimpleStructuredLoggingLibrary.Formatting.Logstash.Test
             Assert.Contains("Warn", parsed.Value<JArray>("tags").ToObject<string[]>());
         }
 
+        [Fact]
+        public void should_merge_arrays_maintaining_order()
+        {
+            var output = new List<FormattedLogEvent>();
+
+            Logger logger = new Logger(logEvents => logEvents
+                .AddFields(new { Things = new[] { "A", "B" } })
+                .AddFields(new { Things = new[] { "C" } })
+                .Select(LogstashJson.Format)
+                .Subscribe(log => output.Add(log))
+                );
+            var callerFilePath = GetCallerFilePath();
+
+            logger.Info(new { Things = new[] { "D" } });
+
+            JObject parsed = GetJObject(output);
+
+            Assert.Equal(new[] { "A", "B", "C", "D" }, parsed.Value<JArray>("Things").ToObject<string[]>());
+        }
+
+        [Fact]
+        public void should_prefer_message_fields_over_additional_fields()
+        {
+            var output = new List<FormattedLogEvent>();
+
+            Logger logger = new Logger(logEvents => logEvents
+                .AddFields(new { Thing = "Hello" })
+                .Select(LogstashJson.Format)
+                .Subscribe(log => output.Add(log))
+                );
+            var callerFilePath = GetCallerFilePath();
+
+            logger.Info(new { Thing = "There" });
+
+            JObject parsed = GetJObject(output);
+
+            Assert.Equal("There", parsed.Value<string>("Thing"));
+        }
+
         private static JObject GetJObject(List<FormattedLogEvent> output)
         {
             var logOutput = output.First().Content;

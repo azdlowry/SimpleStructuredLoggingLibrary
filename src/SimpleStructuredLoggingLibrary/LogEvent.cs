@@ -15,8 +15,18 @@ namespace SimpleStructuredLoggingLibrary
     {
         private List<string> _tags = new List<string>();
         private List<object> _fields= new List<object>();
+        private object _content;
 
-        public object Content { get; set; }
+        public object Content
+        {
+            get { return _content; }
+            set
+            {
+                EnsureValidType(value, nameof(value));
+                _content = value;
+            }
+        }
+
         public LogLevel Level { get; set; }
         public CallerInfo CallerInfo { get; set; }
         public DateTime Timestamp { get; set; }
@@ -30,7 +40,17 @@ namespace SimpleStructuredLoggingLibrary
 
         public void AddField(object additionalFields)
         {
+            EnsureValidType(additionalFields, nameof(additionalFields));
+
             _fields.Add(additionalFields);
+        }
+
+        private void EnsureValidType(object value, string nameof)
+        {
+            if (value.GetType().IsPrimitive)
+                throw new InvalidLogMessageTypeException(nameof, $"{nameof} cannot be a primitive type.");
+            if (value is string)
+                throw new InvalidLogMessageTypeException(nameof, $"{nameof} cannot be a string.");
         }
     }
 }
