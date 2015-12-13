@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using System.Reactive.Linq;
 using Newtonsoft.Json.Linq;
@@ -198,6 +196,26 @@ namespace SimpleStructuredLoggingLibrary.Formatting.Logstash.Test
             JObject parsed = GetJObject(output);
 
             Assert.Equal(new[] { "A", "B", "C", "D" }, parsed.Value<JArray>("Things").ToObject<string[]>());
+        }
+
+        [Fact]
+        public void should_merge_complex_sub_objects()
+        {
+            var output = new List<FormattedLogEvent>();
+
+            Logger logger = new Logger(logEvents => logEvents
+                .AddFields(new { Things = new { A = 1, B = 2 } })
+                .AddFields(new { Things = new { C = 3 } })
+                .Select(LogstashJson.Format)
+                .Subscribe(log => output.Add(log))
+                );
+            var callerFilePath = GetCallerFilePath();
+
+            logger.Info(new { Things = new { D = 4 } });
+
+            JObject parsed = GetJObject(output);
+
+            Assert.Equal(new Dictionary<string, int> { { "A", 1 }, { "B", 2 }, { "C", 3 }, { "D", 4 } }, parsed.Value<JObject>("Things").ToObject<Dictionary<string, int>>());
         }
 
         [Fact]
